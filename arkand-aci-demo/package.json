@@ -1,0 +1,20 @@
+{
+  "name": "aci-root",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ingest": "tsx scripts/ingest.ts"
+  },
+  "dependencies": {
+  "chromadb": "^3.0.14",
+    "gray-matter": "^4.0.3",
+    "openai": "^5.19.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5",
+    "typescript": "^5.4.0",
+    "@types/node": "^20.14.2"
+  }
+}
