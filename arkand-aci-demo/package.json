@@ -3,7 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ingest": "tsx scripts/ingest.ts"
+  "dev": "pnpm -C aci-chatbot dev",
+  "build": "pnpm -C aci-chatbot build",
+  "start": "pnpm -C aci-chatbot start",
+  "lint": "pnpm -C aci-chatbot lint",
+  "ingest": "tsx scripts/ingest.ts",
+  "demo:seed": "pnpm run ingest && pnpm -C aci-chatbot dev"
   },
   "dependencies": {
   "chromadb": "^3.0.14",

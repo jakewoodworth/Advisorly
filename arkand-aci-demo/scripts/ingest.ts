@@ -7,6 +7,28 @@ import { ChromaClient } from "chromadb";
 import chunkMarkdown from "../lib/chunk";
 import embedTexts from "../lib/embed";
 
+function loadEnvFiles(paths: string[]) {
+  for (const p of paths) {
+    try {
+      const raw = require("node:fs").readFileSync(p, "utf8");
+      raw
+        .split(/\r?\n/)
+        .map((l: string) => l.trim())
+        .filter((l: string) => l && !l.startsWith("#"))
+        .forEach((line: string) => {
+          const idx = line.indexOf("=");
+          if (idx === -1) return;
+          const key = line.slice(0, idx).trim();
+          let val = line.slice(idx + 1).trim();
+          if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+            val = val.slice(1, -1);
+          }
+          if (!process.env[key]) process.env[key] = val;
+        });
+    } catch {}
+  }
+}
+
 async function ensureDir(dir: string) {
   await fs.mkdir(dir, { recursive: true });
 }
@@ -67,6 +89,15 @@ async function markdownToText(md: string): Promise<string> {
 
 async function main() {
   const root = ((globalThis as any)?.process?.cwd?.() as string) || path.resolve(".");
+  // Load env from local files if not already set (helps when running from repo root)
+  if (!process.env.OPENAI_API_KEY) {
+    loadEnvFiles([
+      path.join(root, ".env.local"),
+      path.join(root, ".env"),
+      path.join(root, "aci-chatbot", ".env.local"),
+      path.join(root, "aci-chatbot", ".env"),
+    ]);
+  }
   const dataDir = path.join(root, "data", "aci");
   const chromaPath = (globalThis as any)?.process?.env?.CHROMA_PATH || ".chroma/aci";
   const chromaDir = path.isAbsolute(chromaPath) ? chromaPath : path.join(root, chromaPath);
@@ -83,13 +114,63 @@ async function main() {
   const envPort = (globalThis as any)?.process?.env?.CHROMA_PORT as string | undefined;
   const host = envHost || "localhost";
   const port = envPort ? Number(envPort) : 8000;
-  const client = new ChromaClient({ host, port, ssl: false });
-  const collection = await client.getOrCreateCollection({
-    name: "aci_demo",
-    embeddingFunction: {
-      generate: async (inputs: string[]) => embedTexts(inputs),
-    },
-  });
+  const pathUrl = `http://${host}:${port}`;
+  let collection: any;
+  try {
+    // Prefer host/port; pass embeddingFunction: null and provide embeddings explicitly when adding
+    // Try JS client first; if it fails with NotFound, fall back to REST calls
+    try {
+      const client = new ChromaClient({ host, port, ssl: false });
+      collection = await client.getOrCreateCollection({
+        name: "aci_demo",
+        embeddingFunction: null as any,
+      });
+    } catch (e: any) {
+      console.warn("JS client getOrCreateCollection failed; using REST fallback.");
+      const base = `http://${host}:${port}/api/v1`;
+      // Try to find existing collection by name
+      let collId: string | null = null;
+      try {
+        const listRes = await fetch(`${base}/collections`);
+        if (listRes.ok) {
+          const list: any[] = await listRes.json();
+          const found = list.find((c: any) => c?.name === "aci_demo");
+          if (found) collId = found.id;
+        }
+      } catch {}
+      if (!collId) {
+        const res = await fetch(`${base}/collections`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "aci_demo" }),
+        });
+        if (!res.ok) {
+          // As a fallback, list again in case it was created concurrently
+          const listRes2 = await fetch(`${base}/collections`);
+          if (!listRes2.ok) throw new Error(`REST create collection failed: ${res.status} ${res.statusText}`);
+          const list2: any[] = await listRes2.json();
+          const found2 = list2.find((c: any) => c?.name === "aci_demo");
+          if (!found2) throw new Error(`REST create collection failed: ${res.status} ${res.statusText}`);
+          collId = found2.id;
+        } else {
+          const data = await res.json();
+          collId = data.id;
+        }
+      }
+      collection = { id: collId!, name: "aci_demo" };
+      (collection as any)._rest = true;
+      (collection as any)._base = base;
+    }
+  } catch (err: any) {
+    console.error("Chroma connection failed. Ensure the Chroma server is running.");
+    console.error("Tip: Start Docker Desktop, then run:");
+    console.error("  docker run -d --name chroma-aci -p 8000:8000 \\");
+    console.error("    -e CHROMA_SERVER_CORS_ALLOW_ORIGINS=\"*\" \\");
+    console.error("    -v \"$(pwd)/.chroma/aci:/chroma/chroma\" \\");
+    console.error("    chromadb/chroma:0.5.5");
+    console.error(`Current target: http://${host}:${port}`);
+    throw err;
+  }
 
   let totalChunks = 0;
   for (const filePath of files) {
@@ -116,9 +197,22 @@ async function main() {
     });
 
     const embeddings = await embedTexts(documents);
-
-    // Upsert/add in the same batch size as embeddings
-    await collection.add({ ids, embeddings, documents, metadatas });
+    if ((collection as any)._rest) {
+      const payload = {
+        ids,
+        embeddings,
+        documents,
+        metadatas,
+      };
+      const r = await fetch(`${(collection as any)._base}/collections/${collection.id}/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) throw new Error(`REST add failed: ${r.status} ${r.statusText}`);
+    } else {
+      await collection.add({ ids, embeddings, documents, metadatas });
+    }
 
     totalChunks += chunks.length;
     console.log(`Indexed ${chunks.length} chunks from ${relFile}`);
