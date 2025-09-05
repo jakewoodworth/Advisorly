@@ -1,0 +1,12 @@
+{
+  "buildCommand": "pnpm approve-builds -y && pnpm install && pnpm build",
+  "framework": "nextjs",
+  "ignoreCommand": "",
+  "installCommand": "",
+  "outputDirectory": "",
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1"
+    }
+  }
+}
