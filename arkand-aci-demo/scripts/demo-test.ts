@@ -55,8 +55,8 @@ async function run() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: question }),
       });
-      const data = await res.json().catch(() => ({} as any));
-      const answer: string = (data?.answer as string) || "";
+  const data: unknown = await res.json().catch(() => ({}));
+  const answer: string = (data && typeof data === 'object' && 'answer' in data ? String((data as any).answer) : "");
       const ms = Date.now() - started;
 
       let ok = true;
@@ -67,8 +67,8 @@ async function run() {
       }
       if (ok) passed += 1;
       results.push({ i, q: question, ok, status, answer });
-    } catch (err: any) {
-      results.push({ i, q: question, ok: false, status: `error: ${err?.message || err}`, answer: "" });
+    } catch (err) {
+      results.push({ i, q: question, ok: false, status: `error: ${err instanceof Error ? err.message : String(err)}`, answer: "" });
     }
     // small delay to avoid rate spikes
     await new Promise((r) => setTimeout(r, 150));

@@ -8,10 +8,13 @@
   "start": "pnpm -C aci-chatbot start",
   "lint": "pnpm -C aci-chatbot lint",
   "ingest": "tsx scripts/ingest.ts",
-  "demo:seed": "pnpm run ingest && pnpm -C aci-chatbot dev"
+  "demo:seed": "pnpm run ingest && pnpm -C aci-chatbot dev",
+  "eval": "tsx scripts/run-eval.ts",
+  "analyze": "tsx scripts/analyze-eval.ts"
   },
   "dependencies": {
   "chromadb": "^3.0.14",
+  "@pinecone-database/pinecone": "^6.1.2",
     "gray-matter": "^4.0.3",
     "openai": "^5.19.1",
     "remark-parse": "^11.0.0",

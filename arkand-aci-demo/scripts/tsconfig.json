@@ -2,12 +2,14 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
+  "esModuleInterop": true,
+  "allowSyntheticDefaultImports": true,
     "types": ["node"],
     "lib": ["ES2023"]
   },
-  "include": ["env.d.ts", "aci-chatbot/**/*"],
-  "exclude": ["node_modules", "aci-chatbot/.next", "scripts"]
+  "include": ["**/*.ts"],
+  "exclude": ["../aci-chatbot/.next"]
 }

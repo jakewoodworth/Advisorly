@@ -69,17 +69,43 @@ async function main() {
 
   const raw = await readFile(latest, "utf8");
   const lines = raw.split(/\r?\n/).filter(Boolean);
-  const results: Result[] = [];
+  const byQ = new Map<string, Result>();
   for (const line of lines) {
     try {
       const obj = JSON.parse(line);
       if (obj && typeof obj.q === "string") {
-        results.push({ q: obj.q, answer: obj.answer ?? "", ms: Number(obj.ms) || 0, status: String(obj.status || "") });
+        const r: Result = { q: obj.q, answer: obj.answer ?? "", ms: Number(obj.ms) || 0, status: String(obj.status || "") };
+        const prev = byQ.get(r.q);
+        if (!prev) {
+          byQ.set(r.q, r);
+        } else {
+          const prevCode = statusCode(prev.status) ?? 0;
+          const currCode = statusCode(r.status) ?? 0;
+          const prevAns = (prev.answer || "").trim();
+          const currAns = (r.answer || "").trim();
+          const prevOk = prevCode === 200;
+          const currOk = currCode === 200;
+          const prevGood = prevOk && !isFallback(prevAns) && prevAns.length > 0;
+          const currGood = currOk && !isFallback(currAns) && currAns.length > 0;
+
+          let takeCurrent = false;
+          if (currOk && !prevOk) takeCurrent = true;
+          else if (currOk && prevOk) {
+            if (currGood && !prevGood) takeCurrent = true;
+            else if ((currGood && prevGood) || (!currGood && !prevGood)) {
+              // Prefer longer answer as a simple tie-breaker
+              if (currAns.length > prevAns.length) takeCurrent = true;
+            }
+          }
+          // If both non-200, keep the previous (earlier success may exist elsewhere)
+          if (takeCurrent) byQ.set(r.q, r);
+        }
       }
     } catch {
       // skip malformed lines
     }
   }
+  const results: Result[] = Array.from(byQ.values());
 
   if (results.length === 0) {
     console.error(`No parsable rows in ${latest}`);
@@ -95,7 +121,8 @@ async function main() {
 
   const failures = results.filter((r) => {
     const code = statusCode(r.status);
-    const ok = code === 200 && !isFallback(r.answer) && (r.answer || "").trim().length > 0;
+    const ans = (r.answer || "").trim();
+    const ok = code === 200 && !isFallback(ans) && ans.length > 0;
     return !ok;
   });
 

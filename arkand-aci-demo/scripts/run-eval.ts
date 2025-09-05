@@ -32,6 +32,14 @@ async function main() {
   const outJsonl = path.join(logsDir, `eval-results-${day}.jsonl`);
   const outCsv = path.join(logsDir, `eval-summary-${day}.csv`);
   const apiUrl = process.env.API_URL || "http://localhost:3000/api/chat";
+  const healthUrl = (() => {
+    try {
+      const u = new URL(apiUrl);
+      return `${u.protocol}//${u.host}/api/health`;
+    } catch {
+      return "http://localhost:3000/api/health";
+    }
+  })();
 
   const raw = await readFile(questionsPath, "utf8").catch(() => null);
   if (!raw) throw new Error(`Could not read ${questionsPath}`);
@@ -43,32 +51,55 @@ async function main() {
   // Write CSV header
   await writeFile(outCsv, "q,ms,ok\n", "utf8");
 
+  // Best-effort readiness check to avoid hitting a cold dev server
+  try {
+    const h = await fetch(healthUrl, { method: "GET" });
+    if (!h.ok) {
+      // small grace period if health isn't OK yet
+      await new Promise((r) => setTimeout(r, 800));
+    }
+  } catch {
+    // If the health endpoint isn't available, continue anyway
+  }
+
   let idx = 0;
   for (const q of questions) {
     idx += 1;
     const started = Date.now();
-    try {
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: q }),
-      });
-      const data = await res.json().catch(() => ({} as any));
-      const answer: string = (data?.answer as string) || "";
-      const ms = Date.now() - started;
-      const status = `${res.status} ${res.statusText}`.trim();
+    let attempt = 0;
+    let recorded = false;
+    while (attempt < 3 && !recorded) {
+      attempt += 1;
+      try {
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: q }),
+        });
+  const data: unknown = await res.json().catch(() => ({}));
+  const answer: string = (data && typeof data === 'object' && 'answer' in data ? String((data as any).answer) : "");
+        const ms = Date.now() - started;
+        const status = `${res.status} ${res.statusText}`.trim();
 
-      const result: Result = { q, answer, ms, status };
-      await appendFile(outJsonl, JSON.stringify(result) + "\n", "utf8");
-      const ok = isOk(answer);
-      await appendFile(outCsv, `${csvEscape(q)},${ms},${ok}\n`, "utf8");
-    } catch (err: any) {
-      const ms = Date.now() - started;
-      const answer = "";
-      const status = `error: ${err?.message || String(err)}`;
-      const result: Result = { q, answer, ms, status };
-      await appendFile(outJsonl, JSON.stringify(result) + "\n", "utf8");
-      await appendFile(outCsv, `${csvEscape(q)},${ms},false\n`, "utf8");
+        const result: Result = { q, answer, ms, status };
+        await appendFile(outJsonl, JSON.stringify(result) + "\n", "utf8");
+        const ok = isOk(answer);
+        await appendFile(outCsv, `${csvEscape(q)},${ms},${ok}\n`, "utf8");
+        recorded = true;
+    } catch (err) {
+        if (attempt >= 3) {
+          const ms = Date.now() - started;
+          const answer = "";
+      const status = `error: ${err instanceof Error ? err.message : String(err)}`;
+          const result: Result = { q, answer, ms, status };
+          await appendFile(outJsonl, JSON.stringify(result) + "\n", "utf8");
+          await appendFile(outCsv, `${csvEscape(q)},${ms},false\n`, "utf8");
+          recorded = true;
+        } else {
+          // backoff before retrying
+          await new Promise((r) => setTimeout(r, 300 * attempt));
+        }
+      }
     }
     // Small delay to reduce burstiness
     await new Promise((r) => setTimeout(r, 150));
