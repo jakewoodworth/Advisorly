@@ -1,7 +1,0 @@
----
-title: Transfer Registration to a Colleague
-source: demo
-topic: registration
----
-
-If you can no longer attend, most events allow you to transfer your registration to a colleague from the same organization. To start, locate your confirmation email or registration portal and choose the option to “Transfer” or “Substitute” an attendee. You’ll typically provide the new participant’s name, title, organization, and email, and confirm that they accept any terms tied to the original registration. Transfers are usually permitted until a specified deadline—often a week or two before the event—to allow time for badge printing and security requirements. In most cases, there’s no fee for a simple name change, but some events charge an administrative fee; check the event’s refund and substitution policy for details. The new attendee will receive a confirmation email and can update preferences like dietary needs, session selections, or communication settings. If your registration includes ticketed items or workshops, those entitlements generally transfer as well. For last‑minute changes close to the event, contact the registration desk directly so staff can ensure a smooth check‑in experience on site.
