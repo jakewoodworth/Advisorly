@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/export/pdf/route.js": {
+      "runtime": "nodejs20.x"
+    },
+    "api/export/ics/route.js": {
+      "runtime": "nodejs20.x"
+    },
+    "api/advisor/route.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}

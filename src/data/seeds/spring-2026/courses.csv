@@ -1,0 +1,61 @@
+courseId,code,title,credits,genEdTags,prereqs,equivalents,tags,level
+BUS-101,BUS 101,Foundations of Business,3,SOC,,,Business|FirstYear,100
+BUS-201,BUS 201,Managerial Accounting,3,,BUS-101,,Business|Finance,200
+BUS-210,BUS 210,Operations Management,3,,BUS-101,,Business|Analytics,200
+BUS-220,BUS 220,Marketing Principles,3,,BUS-101,,Business|Marketing,200
+BUS-230,BUS 230,Business Analytics,3,QUANT,BUS-210,,Business|Analytics,300
+BUS-240,BUS 240,Organizational Behavior,3,,BUS-101,,Business|Leadership,300
+BUS-310,BUS 310,Financial Management,3,,BUS-201,,Business|Finance,300
+BUS-320,BUS 320,Strategic Management,3,,BUS-230|BUS-310,,Business|Strategy,400
+BUS-330,BUS 330,Business Ethics,3,HUM,,,Business|Ethics,300
+BUS-340,BUS 340,Global Business,3,INTL,,,Business|Global,300
+BUS-350,BUS 350,Entrepreneurship Lab,2,,BUS-220,,Business|Innovation,300
+BUS-360,BUS 360,Capstone Project,4,,BUS-320,,Business|Capstone,400
+CS-101,CS 101,Introduction to Programming,4,QUANT,,,CS|Programming,100
+CS-120,CS 120,Data Structures,4,,CS-101,,CS|Programming,200
+CS-130,CS 130,Computer Systems,4,,CS-101,,CS|Systems,200
+CS-140,CS 140,Full-Stack Web Development,3,,CS-101,,CS|Web,200
+CS-210,CS 210,Algorithms,4,,CS-120,,CS|Theory,300
+CS-220,CS 220,Database Systems,3,,CS-120,,CS|Data,300
+CS-230,CS 230,Software Engineering,3,,CS-120,,CS|Projects,300
+CS-240,CS 240,Operating Systems,4,,CS-130,,CS|Systems,300
+CS-250,CS 250,Computer Networks,3,,CS-130,,CS|Systems,300
+CS-260,CS 260,Fundamentals of AI,3,,CS-210,,CS|AI,300
+CS-270,CS 270,Human-Computer Interaction,3,,CS-230,,CS|Design,300
+CS-280,CS 280,Capstone Studio,4,,CS-230|CS-240,,CS|Capstone,400
+BIO-101,BIO 101,Introductory Biology,4,NAT,,,Biology|Core,100
+BIO-110,BIO 110,Genetics,4,,BIO-101,,Biology|Core,200
+BIO-120,BIO 120,Cellular Biology,4,,BIO-101,,Biology|Core,200
+BIO-130,BIO 130,Ecology,4,,BIO-101,,Biology|Field,200
+BIO-140,BIO 140,Microbiology,4,,BIO-101,,Biology|Lab,200
+BIO-201,BIO 201,Anatomy and Physiology I,4,,BIO-120,,Biology|Health,300
+BIO-201L,BIO 201L,Anatomy Lab,1,,BIO-201,,Biology|Lab,300
+BIO-210,BIO 210,Biochemistry,4,,BIO-120,,Biology|Chemistry,300
+BIO-220,BIO 220,Molecular Biology,4,,BIO-110|BIO-120,,Biology|Lab,300
+BIO-230,BIO 230,Field Research Methods,3,,BIO-130,,Biology|Field,300
+BIO-240,BIO 240,Environmental Biology,3,ENV,BIO-130,,Biology|Field,300
+BIO-250,BIO 250,Senior Seminar in Biology,2,,BIO-210|BIO-220,,Biology|Capstone,400
+PSY-101,PSY 101,Introduction to Psychology,3,SOC,,,Psychology|Core,100
+PSY-120,PSY 120,Developmental Psychology,3,,PSY-101,,Psychology|Core,200
+PSY-130,PSY 130,Social Psychology,3,,PSY-101,,Psychology|Core,200
+PSY-140,PSY 140,Cognitive Psychology,3,,PSY-101,,Psychology|Core,200
+PSY-150,PSY 150,Statistics for Psychology,3,QUANT,PSY-101,,Psychology|Methods,200
+PSY-210,PSY 210,Abnormal Psychology,3,,PSY-120,,Psychology|Clinical,300
+PSY-220,PSY 220,Research Methods in Psychology,4,,PSY-150,,Psychology|Methods,300
+PSY-230,PSY 230,Personality Theory,3,,PSY-130,,Psychology|Clinical,300
+PSY-240,PSY 240,Neuroscience Foundations,4,,PSY-140,,Psychology|Neuro,300
+PSY-250,PSY 250,Counseling Techniques,3,,PSY-210,,Psychology|Clinical,300
+PSY-260,PSY 260,Industrial-Organizational Psychology,3,,PSY-130,,Psychology|Applied,300
+PSY-270,PSY 270,Senior Practicum,3,,PSY-220,,Psychology|Capstone,400
+COM-101,COM 101,Introduction to Communication,3,SOC,,,Communication|Core,100
+COM-110,COM 110,Public Speaking,3,,COM-101,,Communication|Speaking,100
+COM-120,COM 120,Media Literacy,3,,COM-101,,Communication|Media,100
+COM-130,COM 130,Interpersonal Communication,3,,COM-101,,Communication|Core,200
+COM-140,COM 140,Digital Storytelling,3,,COM-101,,Communication|Media,200
+COM-210,COM 210,Communication Theory,3,,COM-130,,Communication|Theory,200
+COM-220,COM 220,Journalism Practices,3,,COM-120,,Communication|Media,200
+COM-230,COM 230,Strategic Communication,3,,COM-210,,Communication|Strategy,300
+COM-240,COM 240,Visual Communication,3,,COM-140,,Communication|Design,300
+COM-250,COM 250,Crisis Communication,3,,COM-230,,Communication|Strategy,300
+COM-260,COM 260,Leadership Communication,3,,COM-230,,Communication|Leadership,300
+COM-270,COM 270,Capstone Campaigns,4,,COM-230|COM-260,,Communication|Capstone,400

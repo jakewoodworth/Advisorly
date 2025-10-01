@@ -1,0 +1,15 @@
+[
+  {
+    "sectionId": "",
+    "courseId": "",
+    "termId": "",
+    "instructor": "",
+    "location": "",
+    "days": "MWF",
+    "start": "09:00",
+    "end": "09:50",
+    "capacity": 30,
+    "enrolled": 0,
+    "linkedWith": ""
+  }
+]

@@ -1,0 +1,14 @@
+majorId,catalogYear,groupId,groupTitle,logic,courseIds,note
+business-admin,2026-2027,bus-core,Business Core,allOf,BUS-101|BUS-201|BUS-210|BUS-220|BUS-230|BUS-240|BUS-310|BUS-320,
+business-admin,2026-2027,bus-analytics,Analytics & Strategy,chooseN,BUS-330|BUS-340|BUS-350|BUS-360,chooseN=2
+business-admin,2026-2027,bus-capstone,Capstone Experience,allOf,BUS-360,
+cs-bs,2026-2027,cs-foundations,CS Foundations,allOf,CS-101|CS-120|CS-130|CS-210|CS-220|CS-230|CS-240,
+cs-bs,2026-2027,cs-electives,Advanced CS Electives,chooseN,CS-140|CS-250|CS-260|CS-270|CS-280,chooseN=3
+cs-bs,2026-2027,cs-capstone,Capstone Studio,allOf,CS-280,
+biology-bs,2026-2027,bio-core,Biology Core,allOf,BIO-101|BIO-110|BIO-120|BIO-130|BIO-140|BIO-210|BIO-220,
+biology-bs,2026-2027,bio-labs,Human Anatomy Series,allOf,BIO-201|BIO-201L,
+biology-bs,2026-2027,bio-electives,Field & Environmental Electives,chooseN,BIO-230|BIO-240|BIO-250,chooseN=2
+psychology-ba,2026-2027,psy-core,Psychology Core,allOf,PSY-101|PSY-120|PSY-130|PSY-140|PSY-150|PSY-210|PSY-220,
+psychology-ba,2026-2027,psy-advanced,Advanced Psychology,chooseN,PSY-230|PSY-240|PSY-250|PSY-260|PSY-270,chooseN=3
+communication-ba,2026-2027,com-core,Communication Core,allOf,COM-101|COM-110|COM-120|COM-130|COM-140|COM-210|COM-230,
+communication-ba,2026-2027,com-media,Media & Campaign Electives,chooseN,COM-220|COM-240|COM-250|COM-260|COM-270,chooseN=3

@@ -1,0 +1,119 @@
+[
+  {
+    "majorId": "business-admin",
+    "catalogYear": "2026-2027",
+    "groupId": "bus-core",
+    "groupTitle": "Business Core",
+    "logic": "allOf",
+    "courseIds": "BUS-101|BUS-201|BUS-210|BUS-220|BUS-230|BUS-240|BUS-310|BUS-320",
+    "note": ""
+  },
+  {
+    "majorId": "business-admin",
+    "catalogYear": "2026-2027",
+    "groupId": "bus-analytics",
+    "groupTitle": "Analytics & Strategy",
+    "logic": "chooseN",
+    "courseIds": "BUS-330|BUS-340|BUS-350|BUS-360",
+    "note": "chooseN=2"
+  },
+  {
+    "majorId": "business-admin",
+    "catalogYear": "2026-2027",
+    "groupId": "bus-capstone",
+    "groupTitle": "Capstone Experience",
+    "logic": "allOf",
+    "courseIds": "BUS-360",
+    "note": ""
+  },
+  {
+    "majorId": "cs-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "cs-foundations",
+    "groupTitle": "CS Foundations",
+    "logic": "allOf",
+    "courseIds": "CS-101|CS-120|CS-130|CS-210|CS-220|CS-230|CS-240",
+    "note": ""
+  },
+  {
+    "majorId": "cs-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "cs-electives",
+    "groupTitle": "Advanced CS Electives",
+    "logic": "chooseN",
+    "courseIds": "CS-140|CS-250|CS-260|CS-270|CS-280",
+    "note": "chooseN=3"
+  },
+  {
+    "majorId": "cs-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "cs-capstone",
+    "groupTitle": "Capstone Studio",
+    "logic": "allOf",
+    "courseIds": "CS-280",
+    "note": ""
+  },
+  {
+    "majorId": "biology-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "bio-core",
+    "groupTitle": "Biology Core",
+    "logic": "allOf",
+    "courseIds": "BIO-101|BIO-110|BIO-120|BIO-130|BIO-140|BIO-210|BIO-220",
+    "note": ""
+  },
+  {
+    "majorId": "biology-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "bio-labs",
+    "groupTitle": "Human Anatomy Series",
+    "logic": "allOf",
+    "courseIds": "BIO-201|BIO-201L",
+    "note": ""
+  },
+  {
+    "majorId": "biology-bs",
+    "catalogYear": "2026-2027",
+    "groupId": "bio-electives",
+    "groupTitle": "Field & Environmental Electives",
+    "logic": "chooseN",
+    "courseIds": "BIO-230|BIO-240|BIO-250",
+    "note": "chooseN=2"
+  },
+  {
+    "majorId": "psychology-ba",
+    "catalogYear": "2026-2027",
+    "groupId": "psy-core",
+    "groupTitle": "Psychology Core",
+    "logic": "allOf",
+    "courseIds": "PSY-101|PSY-120|PSY-130|PSY-140|PSY-150|PSY-210|PSY-220",
+    "note": ""
+  },
+  {
+    "majorId": "psychology-ba",
+    "catalogYear": "2026-2027",
+    "groupId": "psy-advanced",
+    "groupTitle": "Advanced Psychology",
+    "logic": "chooseN",
+    "courseIds": "PSY-230|PSY-240|PSY-250|PSY-260|PSY-270",
+    "note": "chooseN=3"
+  },
+  {
+    "majorId": "communication-ba",
+    "catalogYear": "2026-2027",
+    "groupId": "com-core",
+    "groupTitle": "Communication Core",
+    "logic": "allOf",
+    "courseIds": "COM-101|COM-110|COM-120|COM-130|COM-140|COM-210|COM-230",
+    "note": ""
+  },
+  {
+    "majorId": "communication-ba",
+    "catalogYear": "2026-2027",
+    "groupId": "com-media",
+    "groupTitle": "Media & Campaign Electives",
+    "logic": "chooseN",
+    "courseIds": "COM-220|COM-240|COM-250|COM-260|COM-270",
+    "note": "chooseN=3"
+  }
+]
